@@ -22,11 +22,11 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      image: '../assets/image_1.jpg',
+      image: require('../assets/image_1.jpg'),
       dropdownHeight: 170,
       caption: '',
       theme: false,
-      ImageName: "Image1"
+      imageName: "Image1"
     }
   }
 
@@ -51,7 +51,8 @@ export default class App extends React.Component {
     if (this.state.caption != '' && this.state.caption != null) {
       await firebase.database().ref('/post/' + Math.random().toString().slice(2)).set({
         caption: this.state.caption,
-        image: this.state.image,
+        image: this.state.imageName,
+        author:firebase.auth().currentUser.displayName,
         uid: firebase.auth().currentUser.uid,
         createOn: new Date(),
         likes: 0
@@ -64,9 +65,8 @@ export default class App extends React.Component {
   }
 
   setValues = (value) => {
-    this.setState({ image: value })
+    this.setState({ image: value.image, imageName:value.imageName })
   }
-
 
   render() {
     return (
@@ -76,7 +76,7 @@ export default class App extends React.Component {
             <Image source={require("../assets/logo.png")} style={{ position: 'relative', width: 100, height: 100, marginLeft: 10, marginTop: 10 }} />
           </View>
           <Text style={this.state.theme ? styles.heading : styles.headingDark}>New Post</Text>
-          <Image source={require(this.state.image)} style={styles.image} />
+          <Image source={this.state.image} style={styles.image} />
           <View style={this.state.theme ? styles.subContainer : styles.subContainerDark}>
             <Picker
               itemStyle={this.state.theme ? styles.pickerItem : styles.pickerItemDark}
@@ -86,31 +86,31 @@ export default class App extends React.Component {
               <Picker.Item label="Choose Image" />
               <Picker.Item
                 label="Image1"
-                value={'../assets/image_1.jpg'}
+                value={{image:require('../assets/image_1.jpg'),imageName:"Image1"}}
               />
               <Picker.Item
                 label="Image2"
-                value={'../assets/image_2.jpg'}
+                value={{image:require('../assets/image_2.jpg'),imageName:"Image2"}}
               />
               <Picker.Item
                 label="Image3"
-                value={'../assets/image_3.jpg'}
+                value={{image:require('../assets/image_3.jpg'),imageName:"Image3"}}
               />
               <Picker.Item
                 label="Image4"
-                value={'../assets/image_4.jpg'}
+                value={{image:require('../assets/image_4.jpg'),imageName:"Image4"}}
               />
               <Picker.Item
                 label="Image5"
-                value={'../assets/image_5.jpg'}
+                value={{image:require('../assets/image_5.jpg'),imageName:"Image5"}}
               />
               <Picker.Item
                 label="Image6"
-                value={'../assets/image_6.jpg'}
+                value={{image:require('../assets/image_6.jpg'),imageName:"Image6"}}
               />
               <Picker.Item
                 label="Image7"
-                value={'../assets/image_7.jpg'}
+                value={{image:require('../assets/image_7.jpg'),imageName:"Image7"}}
               />
             </Picker>
 
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     color: '#000',
     width: '100%',
     marginTop: 50,
-    alignSelf: 'center',
+    alignSelf: 'center', 
     textAlign: 'center',
   },
 
